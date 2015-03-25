@@ -8,7 +8,7 @@ import Color
 import Window
 import Mouse
 import Time
-import Noise
+import Noise.ProcNoise
 --import Debug
 
 -- len, weight, left, right
@@ -50,12 +50,12 @@ branches t x y rotation theta wind = case t of
 
 tWind : Signal Float
 tWind =
-  Signal.foldp (\ms total -> total + 0.01) 0 (Time.fps 60)
+  Signal.foldp (\ms total -> total + 0.006) 0 (Time.fps 60)
 
 signalWind : Signal Float
 signalWind =
   Signal.map
-    (\time -> Noise.perlin2 time 0.5 |> (*) 0.4)
+    (\time -> (Noise.ProcNoise.perlin 0 time) * 2 - 1 |> (*) 0.4)
     tWind
 
 
